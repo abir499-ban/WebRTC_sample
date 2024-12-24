@@ -14,13 +14,12 @@ const Home = () => {
         socket.emit('join_room', Roominfo);
       }
     
-      const handlejoinRoom = (RoomID) =>{
-        console.log('user joined ', RoomID)
-        navigate(`/room/${RoomID}`);
-      }
     
       useEffect(()=>{
-        socket.on('joined_room', ({roomID}) => handlejoinRoom(roomID));
+        socket.on('joined_room', ({roomID}) =>{
+            console.log('Joined Room ', roomID)
+            navigate(`/room/${roomID}`);
+        });
       }, [socket])
       
   return (

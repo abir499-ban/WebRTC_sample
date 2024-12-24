@@ -4,12 +4,11 @@ import {useSocketContext} from '../hook/useSocketContext'
 const Room = () => {
     const {socket}  = useSocketContext();
 
-    const handleUserJoined = ({emailID}) =>{
-        console.log('User joined ', emailID)
-    }
 
     useEffect(()=>{
-        socket.on('user_joined', handleUserJoined)
+        socket.on('user_joined', ({emailID}) => {
+            console.log("I joined ", emailID)
+        })
     }, [])
   return (
     <div>Room</div>

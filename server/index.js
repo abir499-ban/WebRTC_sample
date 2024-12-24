@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
         try {
             socket.join(roomID);
             socket.emit('joined_room' , {roomID})
-            socket.broadcast.to(roomID).emit('user_joined', emailID);
+            socket.broadcast.to(roomID).emit('user_joined', {emailID});
             console.log("User joined room ", roomID, " ", emailID);
         } catch (error) {
             console.log(error.message)
