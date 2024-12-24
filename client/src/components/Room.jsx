@@ -1,8 +1,11 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSocketContext } from '../hook/useSocketContext'
 import { usePeer } from '../context/Peercontext'
+import ReactPLayer from 'react-player'
+import ReactPlayer from 'react-player'
 
 const Room = () => {
+  const [mystream, setmystream] = useState(null)
   const { socket } = useSocketContext();
   const { peer, createOffer, createAnswer, setRemoteAns } = usePeer();
 
@@ -22,11 +25,16 @@ const Room = () => {
     socket.emit('call_accepted', { emailID: from, ans })
   }, [createAnswer, socket])
 
-  const handleCallAccept = useCallback(async(data) => {
-    const {ans} = data;
+  const handleCallAccept = useCallback(async (data) => {
+    const { ans } = data;
     await setRemoteAns(ans);
     console.log("Call got accepted", ans)
   }, [setRemoteAns])
+
+  const getUserMediaStream = useCallback(async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    setmystream(stream)
+  }, [])
 
   useEffect(() => {
     socket.on('user_joined', handleUserJoin)
@@ -39,8 +47,18 @@ const Room = () => {
     }
 
   }, [handleUserJoin, handleincomingCall, socket, handleCallAccept])
+
+
+  useEffect(() => {
+    getUserMediaStream()
+  }, [])
   return (
-    <div>Room</div>
+    <>
+      <div>Room</div>
+      <div className='flex flex-wrap items-center gap-4 justify-center flex-col'>
+      <ReactPlayer url={mystream} playing />
+      </div>
+    </>
   )
 }
 
