@@ -25,7 +25,19 @@ export const PeerContextProvider = ({children}) => {
         return offer;
     }
 
-    return<PeerContext.Provider value={{peer, createOffer}}>
+    const createAnswer = async(offer)=>{
+        await peer.setRemoteDescription(offer);
+        const answer = peer.createAnswer();
+        await peer.setLocalDescription(answer);
+        return answer
+    }
+
+
+    const setRemoteAns = async(ans) => {
+        await peer.setRemoteDescription(ans);
+    }
+
+    return<PeerContext.Provider value={{peer, createOffer, createAnswer, setRemoteAns}}>
         {children}
     </PeerContext.Provider>
 }
@@ -33,7 +45,9 @@ export const PeerContextProvider = ({children}) => {
 
 export const usePeer = () =>{
     const usePeerContext = useContext(PeerContext)
-    return {peer : usePeerContext.peer, createOffer : usePeerContext.createOffer}
+    return {peer : usePeerContext.peer, createOffer : usePeerContext.createOffer, createAnswer : usePeerContext.createAnswer, 
+        setRemoteAns : usePeerContext.setRemoteAns
+    }
 }
 
 
