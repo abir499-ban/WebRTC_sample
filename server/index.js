@@ -1,25 +1,42 @@
 const express = require('express');
+const {createServer} = require('http');
 const app = express();
-const body_parser = require('body-parser');
-const {Server} = require('socket.io');
+const {Server} =require('socket.io')
+const PORT = process.env.port || 8000;
+const myserver = createServer(app);
+const cors = require('cors');
 
 
-const io = new Server();
-app.use(body_parser.json());
+const io = new Server(myserver,{
+    cors:{
+        origin:'http://localhost:5173',
+        methods:["GET","POST"],
+        credentials:true,
+    }
+});
+
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    optionsSuccessStatus: 200 
+  }));
 
 
-io.on('connection', (socket) =>{
-    socket.on('join_room', (data) => {
-        const {emailID, roomID} = data;
-        socket.join(roomID);
-        socket.broadcast(roomID).emit('User with email ', emailID, ' has joined');
-        console.log(`User with ${emailID} and ${socket.id} has joined ${roomID}`);
-    })
+app.get('/', (req,res)=>{
+    return res.end("Welcome");
 })
 
 
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+io.on('connection', (socket)=>{
+    console.log("User connected, ",socket.id);
+    socket.on('message', ((data)=>{
+        console.table(data)
+    }))
 })
-io.listen(3001);
+ 
+
+
+
+myserver.listen(PORT, ()=>{
+    console.log("Server is live at ",PORT);
+})
