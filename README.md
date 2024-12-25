@@ -83,6 +83,41 @@ const handleRoomJoin = useCallback(({ roomID }) => {
 ```
 
 
+-----------------------------
+
 ### Creating Offer
 
-In this step as first client has jooined the chat room, he/she sends the offer to the other client in the chat room
+Whenver a client joins a room, two events are fired:
+  <ul>
+    <li>'joined_room' event : this event is send to that peer on the client side who has joined the rrom</li>
+    <li>'user_joined' event : this is a Boardcast event which tells other peer(s) except him in the room that this particular user has joined</li>
+  </ul>
+
+  On receving the broadcast event, the already joined peer creates an offer which binds his STURN server information and SDP using RTC Peer connection instance method.
+  
+  ```sh
+      const peer = useMemo(() =>{
+        return new RTCPeerConnection({
+            iceServers:[
+                {
+                    urls:[
+                        "stun:stun.l.google.com:19302",
+                        "stun:global.stun.twilio.com:3478"
+                    ]
+                }
+            ]
+        })
+    }, [])
+
+    const createOffer = async()=>{
+        const offer = await peer.createOffer();
+        await peer.setLocalDescription(offer);
+        return offer;
+    }
+  ```
+
+And then this offer along with the destination emailID is emitted via socket as an 'call_user' event. From the server it is again send back to the respective peer with emailID as an 'Incoming Call' event.
+
+![](https://raw.githubusercontent.com/abir499-ban/WebRTC_sample/refs/heads/main/client/src/assets/Screenshot%202024-12-26%20050020.png)
+
+
