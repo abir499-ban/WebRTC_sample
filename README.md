@@ -121,3 +121,33 @@ And then this offer along with the destination emailID is emitted via socket as 
 ![](https://raw.githubusercontent.com/abir499-ban/WebRTC_sample/refs/heads/main/client/src/assets/Screenshot%202024-12-26%20050020.png)
 
 
+### Sending Answer
+
+After the 'incoming call' event is intercepted by client 2, it creates an answer using the instance from the RTC Peer connection method using the offer received.
+
+```sh
+    const createAnswer = async(offer)=>{
+        await peer.setRemoteDescription(offer);
+        const answer = peer.createAnswer();
+        await peer.setLocalDescription(answer);
+        return answer
+    }
+```
+
+Then, this answer is again send to peer 1 under the event 'call_accepted'. And from server it is again send to client 1 under the same event name.
+
+![](https://raw.githubusercontent.com/abir499-ban/WebRTC_sample/refs/heads/main/client/src/assets/Screenshot%202024-12-26%20051426.png)
+
+
+
+### Accepting Answer and Handling Media Sharing
+
+After the 'call-accepted' event is intercepted by client 1, its sets the ans received as the remote description of its RTC Peer instance.
+```sh
+  const setRemoteAns = async(ans) => {
+        await peer.setRemoteDescription(ans);
+    }
+```
+
+
+
