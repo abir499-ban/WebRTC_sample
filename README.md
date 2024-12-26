@@ -149,5 +149,24 @@ After the 'call-accepted' event is intercepted by client 1, its sets the ans rec
     }
 ```
 
+Then the media stream set up is done and the tracks of the stream is added to the peer:
+```sh
+  const sendstream = async(stream) =>{
+        const tracks = stream.getTracks();
+        for(const track of tracks){
+            peer.addTrack(track, stream);
+        }
+    };
+```
+
+
+Now we can share any media stream or files between the peers or the clients, without any server in between!!
+
+-----------------------------
+
+
+We hope this project serves as a helpful guide to understanding and implementing WebRTC-based applications. WebRTC offers immense potential for real-time communication, and this example demonstrates how easily it can be integrated with modern web frameworks.
+
+If you found this project useful, consider giving it a ⭐ on GitHub! Your feedback and contributions are always welcome.
 
 
