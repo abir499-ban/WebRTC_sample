@@ -4,11 +4,15 @@ A applicattion built with React and Node-Express coupled with Socket.io to imple
 ----------
 
 
+
 This readme.md explores the entire working flow of the implemented Web RTC architecture, along with code.
 
 
+---------------------------------------
 
-## Terminolgies : 
+
+
+## Terminologies : 
 
 ### Peer  
 A device or browser directly connecting to another for real-time communication.  
