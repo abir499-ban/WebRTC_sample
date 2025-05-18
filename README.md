@@ -35,7 +35,25 @@ A text-based format used to describe the media capabilities (audio, video) and c
 ### RTC Connection Instance
 An active WebRTC connection between peers that handles the transmission of audio, video, and/or data streams.
 
+--------------------------------------------------------------------------------
+
+### Work around between Signalling server , STUN server and TURN server
+  - Client first reaches out to STUN server via request for its public IP
+  - Server responds with its public IP and port.
+  - If the above process fails, TURN relays all media/data through its server.
+  - Then peers exchange SDP offers/answers and ICE candidates via Signalling server.
+
 ---------
+## Understanding Interactive Connectivity Establishment (ICE)
+ICE for a peer contains information about all the  possible network paths and determines the best one for peer-to-peer communication.
+This information for a peer is known as ICE Candidate, which is exchanged while the process of Signalling, as connectivity checks are performed to select the optimal path.
+The three types of IP addresses that plays a role in ICE are : 
+  - Host Candidate: The device's local IP address.
+
+  - Server Reflexive Candidate: Public IP address discovered via a STUN server .
+
+  - Relayed Candidate: Relay server address provided by a TURN server .
+-----------------------------------------------------------------------------------------------------
 
 
 ## Process :
