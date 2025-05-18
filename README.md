@@ -43,7 +43,7 @@ An active WebRTC connection between peers that handles the transmission of audio
   - If the above process fails, TURN relays all media/data through its server.
   - Then peers exchange SDP offers/answers and ICE candidates via Signalling server.
 
----------
+---------------------------------------------
 ## Understanding Interactive Connectivity Establishment (ICE)
 ICE for a peer contains information about all the  possible network paths and determines the best one for peer-to-peer communication.
 This information for a peer is known as ICE Candidate, which is exchanged while the process of Signalling, as connectivity checks are performed to select the optimal path.
@@ -54,6 +54,22 @@ The three types of IP addresses that plays a role in ICE are :
 
   - Relayed Candidate: Relay server address provided by a TURN server .
 -----------------------------------------------------------------------------------------------------
+
+## A sample workflow of process connecting two peers via Web-RTC
+
+1.  Peer A initiates a connection and contacts a STUN server to discover its public IP and port.
+
+2.  Peer A gathers ICE candidates (including the public IP/port) and sends an SDP offer containing these candidates to Peer B via the signaling server.
+
+3.  Peer B performs a similar process: contacts a STUN server, gathers ICE candidates, and sends an SDP answer back to Peer A through the signaling server.
+
+4.  Both peers perform connectivity checks using the gathered ICE candidates to establish the best possible path for communication.
+MDN Web Docs
+
+5.  If a direct connection is successful, media/data flows directly between peers.
+
+6.  If direct connection fails (e.g., due to NAT/firewall restrictions), peers resort to using a TURN server to relay the media/data traffic.
+-------------------------------------------------------------------------------------------------------
 
 
 ## Process :
